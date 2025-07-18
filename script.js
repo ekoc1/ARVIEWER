@@ -1,13 +1,12 @@
-// Handles loading the events for <model-viewer>'s slotted progress bar
-const onProgress = (event) => {
-  const progressBar = event.target.querySelector('.progress-bar');
-  const updatingBar = event.target.querySelector('.update-bar');
-  updatingBar.style.width = `${event.detail.totalProgress * 100}%`;
-  if (event.detail.totalProgress === 1) {
-    progressBar.classList.add('hide');
-    event.target.removeEventListener('progress', onProgress);
-  } else {
-    progressBar.classList.remove('hide');
-  }
-};
-document.querySelector('model-viewer').addEventListener('progress', onProgress);
+const mindar = document.querySelector('mindar-image');
+const modelViewer = document.getElementById('model-viewer');
+
+mindar.addEventListener('targetFound', () => {
+  modelViewer.style.display = 'block';
+  console.log('Marker bulundu, modeli göster');
+});
+
+mindar.addEventListener('targetLost', () => {
+  modelViewer.style.display = 'none';
+  console.log('Marker kayboldu, modeli gizle');
+});
