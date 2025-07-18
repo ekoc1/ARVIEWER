@@ -1,23 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Marker ile GLB Yerleştirme</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- Kütüphaneler -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.4/dist/mindar-image-three.prod.js"></script>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>MindAR + GLB Marker Yerleştirme</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Stil -->
-    <style>
-      body { margin: 0; overflow: hidden; }
-      #ar-container { width: 100vw; height: 100vh; position: relative; }
-    </style>
-  </head>
-  <body>
-    <div id="ar-container"></div>
-    <script src="script.js"></script>
-  </body>
+  <!-- Tek bir THREE.js sürümü yükleniyor -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+  <!-- GLTFLoader: .glb model yükleyebilmek için -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/loaders/GLTFLoader.js"></script>
+  <!-- MindAR marker tabanlı AR için -->
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.4/dist/mindar-image-three.prod.js"></script>
+
+  <style>
+    body, html { margin: 0; overflow: hidden; }
+    #ar-container {
+      position: fixed; top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: black;
+    }
+  </style>
+</head>
+<body>
+  <div id="ar-container"></div>
+  <script src="script.js"></script>
+</body>
 </html>
