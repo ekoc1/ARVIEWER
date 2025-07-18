@@ -1,21 +1,37 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const mindar = document.querySelector('mindar-image');
-  const modelViewer = document.getElementById('model-viewer');
+import { MindARThree } from "https://cdn.jsdelivr.net/npm/mind-ar@1.1.4/dist/mindar-image-three.prod.js";
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.140.0/build/three.module.js";
 
-  if (!mindar || !modelViewer) {
-    console.error('MindAR veya model-viewer bulunamadı!');
-    return;
-  }
+const mindarThree = new MindARThree({
+  container: document.body,
+  imageTargetSrc: "qrcode.mind"
+});
 
-  mindar.addEventListener('targetFound', () => {
-    modelViewer.style.display = 'block';
-    console.log('Marker bulundu, model gösteriliyor');
-  });
+const { renderer, scene, camera } = mindarThree;
 
-  mindar.addEventListener('targetLost', () => {
-    modelViewer.style.display = 'none';
-    console.log('Marker kayboldu, model gizleniyor');
-  });
+// Modelü doğrudan sahneye ekle (anchor grubuna değil)
+let model;
 
-  mindar.start();
+const loader = new THREE.GLTFLoader();
+loader.load("model.glb", (gltf) => {
+  model = gltf.scene;
+  model.position.set(0, 0, -1); // Kameraya göre 1 metre önünde sabit pozisyon
+  model.scale.set(0.5, 0.5, 0.5);
+  model.visible = false; // Başta gizli
+  scene.add(model);
+});
+
+mindarThree.controller.onTargetFound = () => {
+  console.log("Marker bulundu");
+  if(model) model.visible = true;
+};
+
+mindarThree.controller.onTargetLost = () => {
+  console.log("Marker kayboldu");
+  if(model) model.visible = false;
+};
+
+await mindarThree.start();
+
+renderer.setAnimationLoop(() => {
+  renderer.render(scene, camera);
 });
