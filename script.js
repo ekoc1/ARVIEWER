@@ -1,38 +1,24 @@
-import { MindARThree } from "https://cdn.jsdelivr.net/npm/mind-ar@1.1.4/dist/mindar-image-three.prod.js";
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.140.0/build/three.module.js";
-import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.140.0/examples/jsm/loaders/GLTFLoader.js";
+window.addEventListener("DOMContentLoaded", async () => {
+  const mindarThree = new window.MINDAR.IMAGE.MindARThree({
+    container: document.querySelector("#ar-container"),
+    imageTargetSrc: "./qrkod.mind", // Marker dosyan bu
+  });
 
-const mindarThree = new MindARThree({
-  container: document.querySelector("#ar-container"),
-  imageTargetSrc: "./qrcode.mind"
-});
+  const { renderer, scene, camera } = mindarThree;
 
-const { renderer, scene, camera } = mindarThree;
+  // GLB modelini yükle
+  const loader = new THREE.GLTFLoader();
+  const anchor = mindarThree.addAnchor(0); // Marker ID 0
 
-let model = null;
+  loader.load("model.glb", (gltf) => {
+    const model = gltf.scene;
+    model.scale.set(0.4, 0.4, 0.4); // Gerekirse boyut ayarı
+    model.rotation.set(0, Math.PI, 0); // Dönüş ayarı
+    anchor.group.add(model);
+  });
 
-const loader = new GLTFLoader();
-loader.load("./model.glb", (gltf) => {
-  model = gltf.scene;
-  model.position.set(0, 0, 0);  // Marker üzerindeki konum
-  model.scale.set(0.5, 0.5, 0.5);
-  model.visible = false;  // Başlangıçta gizli
-  scene.add(model);
-});
-
-mindarThree.controller.onTargetFound = () => {
-  console.log("Marker bulundu, modeli göster");
-  if (model) model.visible = true;
-};
-
-mindarThree.controller.onTargetLost = () => {
-  console.log("Marker kayboldu, modeli gizle");
-  if (model) model.visible = false;
-};
-
-(async () => {
   await mindarThree.start();
   renderer.setAnimationLoop(() => {
     renderer.render(scene, camera);
   });
-})();
+});
