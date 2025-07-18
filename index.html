@@ -1,34 +1,22 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <title>ARViewer with MindAR + model-viewer</title>
+  <title>MindAR + model-viewer</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <mindar-image
-    id="mindar-container"
-    image-target-src="qrkod.mind"
-    auto-start="true"
-    system-ui="false"
-    style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;"
-  >
-    <mindar-image-target index="0">
-      <!-- model-viewer başlangıçta gizli -->
-      <model-viewer
-        id="model-viewer"
-        src="model.glb"
-        camera-controls
-        ar
-        style="width: 300px; height: 300px; display: none;"
-        alt="3D Model"
-      ></model-viewer>
-    </mindar-image-target>
-  </mindar-image>
+  <model-viewer
+    id="model-viewer"
+    src="model.glb"
+    camera-controls
+    ar
+    style="width: 300px; height: 300px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); display:none;"
+    alt="3D Model"
+  ></model-viewer>
 
-  <script type="module" src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.4/dist/mindar-image.prod.js"></script>
-  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
-  <script src="script.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.4/dist/mindar-image-three.prod.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
