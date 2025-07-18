@@ -2,64 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Model-viewer bounding box hizalama</title>
-  <script type="module" src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.module.js"></script>
-  <script type="module" src="https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/loaders/GLTFLoader.js"></script>
+  <title>Model-viewer AR Örneği</title>
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
   <style>
+    body {
+      margin: 0; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      height: 100vh; 
+      background: #eee;
+    }
     model-viewer {
       width: 600px;
       height: 400px;
-      background-color: #eee;
-      display: block;
-      margin: 20px auto;
-      /* Başlangıçta translateY 0 */
-      transform: translateY(0);
-      transition: transform 0.5s ease;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
     }
   </style>
 </head>
 <body>
 
-<model-viewer id="modelViewer" src="model.glb" alt="3D Model" camera-controls auto-rotate shadow-intensity="1"></model-viewer>
-
-<script type="module">
-  import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.module.js';
-  import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.150.1/examples/jsm/loaders/GLTFLoader.js';
-
-  const modelViewer = document.getElementById('modelViewer');
-  const modelUrl = modelViewer.getAttribute('src');
-
-  const loader = new GLTFLoader();
-
-  loader.load(modelUrl, (gltf) => {
-    const scene = gltf.scene;
-
-    // Modelin bounding box'unu hesapla
-    const box = new THREE.Box3().setFromObject(scene);
-    const minY = box.min.y;
-
-    // Referans yüksekliği (örneğin zemin gibi kabul edilecek değer)
-    const referenceY = 1.5;
-
-    // Pozisyon farkı (offset)
-    const offsetY = referenceY - minY;
-
-    // CSS px olarak değil, model birimlerine göre translate uygulanacak,
-    // bu yüzden 100 birim kadar çarpabiliriz (kendi model birimine göre ayarla)
-    // Burada px'yi biraz scale etmek lazım, deneyerek ayarla:
-    const translateYPx = offsetY * 100;
-
-    // Modeli görsel olarak yukarı/aşağı taşı (bu CSS seviyesinde)
-    modelViewer.style.transform = `translateY(${translateYPx}px)`;
-
-    console.log('Model alt sınırı:', minY);
-    console.log('Referans yüksekliği:', referenceY);
-    console.log('TranslateY(px):', translateYPx);
-  }, undefined, (error) => {
-    console.error('Model yüklenirken hata:', error);
-  });
-</script>
+<model-viewer
+  src="model.glb"
+  alt="3D Model"
+  ar
+  ar-modes="webxr scene-viewer quick-look"
+  camera-controls
+  auto-rotate
+  shadow-intensity="1"
+></model-viewer>
 
 </body>
 </html>
