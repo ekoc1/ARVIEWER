@@ -1,27 +1,46 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>&lt;model-viewer&gt; template</title>
-    <meta charset="utf-8">
-    <meta name="description" content="&lt;model-viewer&gt; template">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link type="text/css" href="./styles.css" rel="stylesheet"/>
+    <title>AR Model Viewer - Otomatik Kamera Konumu</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link type="text/css" href="./styles.css" rel="stylesheet" />
   </head>
   <body>
-    <!-- <model-viewer> HTML element -->
-    <model-viewer src="model.glb" ar ar-modes="webxr scene-viewer quick-look" camera-controls tone-mapping="neutral" poster="poster.webp" shadow-intensity="1.07" environment-image="legacy">
+    <model-viewer
+      src="model.glb"
+      ar
+      ar-modes="webxr scene-viewer quick-look"
+      camera-controls
+      tone-mapping="neutral"
+      poster="poster.webp"
+      shadow-intensity="1.07"
+      environment-image="legacy"
+      id="modelViewer"
+    >
       <div class="progress-bar hide" slot="progress-bar">
-          <div class="update-bar"></div>
+        <div class="update-bar"></div>
       </div>
-      <button slot="ar-button" id="ar-button">
-          View in your space
-      </button>
+      <button slot="ar-button" id="ar-button">View in your space</button>
       <div id="ar-prompt">
-          <img src="ar_hand_prompt.png">
+        <img src="ar_hand_prompt.png" alt="AR yönlendirme" />
       </div>
-    </model-viewer>  
-    <script src="script.js"></script>
-    <!-- Loads <model-viewer> for browsers: -->
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+    </model-viewer>
+
+    <script type="module">
+      const modelViewer = document.querySelector('#modelViewer');
+
+      modelViewer.addEventListener('load', () => {
+        // Kamera açısını ayarlıyoruz: yatay 45°, dikey 80°, uzaklık 1.5m
+        modelViewer.cameraOrbit = '45deg 80deg 1.5m';
+        modelViewer.jumpCameraToGoal();
+        console.log('Kamera pozisyonu ayarlandı!');
+      });
+    </script>
+
+    <script
+      type="module"
+      src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"
+    ></script>
   </body>
 </html>
