@@ -1,55 +1,27 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>MindAR + Model Viewer Marker Örneği</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar/dist/mindar-image.prod.js"></script>
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
-    <style>
-      body, html { margin: 0; overflow: hidden; }
-      model-viewer { width: 100vw; height: 100vh; display: none; }
-      mindar-image { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; }
-    </style>
+    <title>&lt;model-viewer&gt; template</title>
+    <meta charset="utf-8">
+    <meta name="description" content="&lt;model-viewer&gt; template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" href="./styles.css" rel="stylesheet"/>
   </head>
   <body>
-    <mindar-image
-      id="mindar"
-      src="qrcode.mind"
-      autoplay="true"
-      color-space="sRGB"
-      image-targets="qrcode.mind"
-    >
-      <!-- Marker üzeri model -->
-      <model-viewer
-        id="modelViewer"
-        slot="content"
-        src="model.glb"
-        camera-controls
-        ar
-        ar-modes="webxr scene-viewer quick-look"
-        style="width: 300px; height: 300px;"
-      ></model-viewer>
-    </mindar-image>
-
-    <script>
-      const mindar = document.querySelector("#mindar");
-      const modelViewer = document.querySelector("#modelViewer");
-
-      // Marker bulunduğunda modeli göster
-      mindar.addEventListener("targetFound", () => {
-        modelViewer.style.display = "block";
-        console.log("Marker bulundu, model gösteriliyor.");
-      });
-
-      // Marker kaybolduğunda modeli gizle
-      mindar.addEventListener("targetLost", () => {
-        modelViewer.style.display = "none";
-        console.log("Marker kayboldu, model gizleniyor.");
-      });
-
-      // MindAR başlat
-      mindar.start();
-    </script>
+    <!-- <model-viewer> HTML element -->
+    <model-viewer src="model.glb" ar ar-modes="webxr scene-viewer quick-look" camera-controls tone-mapping="neutral" poster="poster.webp" shadow-intensity="1.07" environment-image="legacy">
+      <div class="progress-bar hide" slot="progress-bar">
+          <div class="update-bar"></div>
+      </div>
+      <button slot="ar-button" id="ar-button">
+          View in your space
+      </button>
+      <div id="ar-prompt">
+          <img src="ar_hand_prompt.png">
+      </div>
+    </model-viewer>  
+    <script src="script.js"></script>
+    <!-- Loads <model-viewer> for browsers: -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
   </body>
 </html>
