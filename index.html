@@ -1,30 +1,53 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8" />
-<title>MindAR Basit Örnek</title>
-<style>
-  body, html, #ar-container {
-    margin: 0; padding: 0; width: 100vw; height: 100vh; overflow: hidden;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <title>MindAR + GLTFLoader Örneği</title>
+  <style>
+    body, html { margin: 0; overflow: hidden; width: 100%; height: 100%; }
+    #ar-container { width: 100vw; height: 100vh; }
+  </style>
 </head>
 <body>
   <div id="ar-container"></div>
 
   <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js';
+    import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/loaders/GLTFLoader.js';
     import { MindARThree } from 'https://cdn.jsdelivr.net/npm/mind-ar@1.2.0/dist/mindar-image-three.prod.js';
 
     const start = async () => {
       const mindarThree = new MindARThree({
         container: document.querySelector("#ar-container"),
-        imageTargetSrc: './qrcode.mind', // kendi dosyanın yolu
+        imageTargetSrc: './qrcode.mind', // Buraya MindAR hedef dosyanızın yolu
       });
 
       const { renderer, scene, camera } = mindarThree;
 
+      // GLTF Loader ile model yükle
+      const loader = new GLTFLoader();
+      const gltf = await loader.loadAsync('./model.glb'); // Buraya model dosyanızın yolu
+      const model = gltf.scene;
+
+      // Modeli sahneye ekle ama başta görünür yapma
+      model.visible = false;
+      scene.add(model);
+
+      // Marker bulunduğunda modeli konumlandır ve göster
+      mindarThree.on("targetFound", (targetIndex) => {
+        model.visible = true;
+      });
+
+      // Marker kaybolduğunda model görünmeye devam etsin
+      mindarThree.on("targetLost", (targetIndex) => {
+        // Burada model.visible = false yapma,
+        // model sahnede kalacak
+      });
+
+      // MindAR'ı başlat
       await mindarThree.start();
 
+      // Render loop
       renderer.setAnimationLoop(() => {
         renderer.render(scene, camera);
       });
