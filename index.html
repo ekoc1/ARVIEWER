@@ -1,28 +1,36 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <title>MindAR + GLB Marker Yerleştirme</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Tek bir THREE.js sürümü yükleniyor -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-  <!-- GLTFLoader: .glb model yükleyebilmek için -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/loaders/GLTFLoader.js"></script>
-  <!-- MindAR marker tabanlı AR için -->
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.4/dist/mindar-image-three.prod.js"></script>
-
-  <style>
-    body, html { margin: 0; overflow: hidden; }
-    #ar-container {
-      position: fixed; top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: black;
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>MindAR Basit Örnek</title>
+<style>
+  body, html, #ar-container {
+    margin: 0; padding: 0; width: 100vw; height: 100vh; overflow: hidden;
+  }
+</style>
 </head>
 <body>
   <div id="ar-container"></div>
-  <script src="script.js"></script>
+
+  <script type="module">
+    import { MindARThree } from 'https://cdn.jsdelivr.net/npm/mind-ar@1.2.0/dist/mindar-image-three.prod.js';
+
+    const start = async () => {
+      const mindarThree = new MindARThree({
+        container: document.querySelector("#ar-container"),
+        imageTargetSrc: './qrcode.mind', // kendi dosyanın yolu
+      });
+
+      const { renderer, scene, camera } = mindarThree;
+
+      await mindarThree.start();
+
+      renderer.setAnimationLoop(() => {
+        renderer.render(scene, camera);
+      });
+    };
+
+    start();
+  </script>
 </body>
 </html>
